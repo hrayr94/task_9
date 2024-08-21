@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
+use common\models\AdminLoginForm;
+
 
 /**
  * Login form
@@ -76,4 +78,26 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+
+
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $this->layout = 'blank';
+
+        $model = new AdminLoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
 }
