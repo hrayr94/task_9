@@ -70,10 +70,10 @@ class BookController extends Controller
     public function actionCreate()
     {
         $model = new Book();
-        $authors = Author::find()->all(); // Загрузка всех авторов
+        $authors = Author::find()->all();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->author_ids = Yii::$app->request->post('Book')['author_ids']; // Сохранение выбранных авторов
+            $model->author_ids = Yii::$app->request->post('Book')['author_ids'];
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
