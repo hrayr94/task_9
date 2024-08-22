@@ -64,7 +64,11 @@ class BookController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $authors = Author::find()->all();
+        $authors = \common\models\Author::find()->all();
+        $model->author_ids = \common\models\BookAuthor::find()
+            ->select('author_id')
+            ->where(['book_id' => $model->id])
+            ->column();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->saveAuthors($model);
@@ -76,6 +80,9 @@ class BookController extends Controller
             'authors' => $authors,
         ]);
     }
+
+
+
 
     protected function saveAuthors($model)
     {
@@ -90,6 +97,7 @@ class BookController extends Controller
             }
         }
     }
+
 
     public function actionDelete($id)
     {

@@ -25,6 +25,7 @@ class Book extends ActiveRecord
         ];
     }
 
+
     public function attributeLabels()
     {
         return [
