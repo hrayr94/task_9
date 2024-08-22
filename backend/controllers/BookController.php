@@ -45,13 +45,14 @@ class BookController extends Controller
         ]);
     }
 
+
     public function actionCreate()
     {
         $model = new Book();
         $authors = Author::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->saveAuthors($model);
+            $model->saveAuthors();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -64,14 +65,14 @@ class BookController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $authors = \common\models\Author::find()->all();
+        $authors = Author::find()->all();
         $model->author_ids = \common\models\BookAuthor::find()
             ->select('author_id')
             ->where(['book_id' => $model->id])
             ->column();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->saveAuthors($model);
+            $model->saveAuthors();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -84,19 +85,19 @@ class BookController extends Controller
 
 
 
-    protected function saveAuthors($model)
-    {
-        \common\models\BookAuthor::deleteAll(['book_id' => $model->id]);
 
-        if (is_array($model->author_ids)) {
-            foreach ($model->author_ids as $author_id) {
-                $bookAuthor = new \common\models\BookAuthor();
-                $bookAuthor->book_id = $model->id;
-                $bookAuthor->author_id = $author_id;
-                $bookAuthor->save();
-            }
-        }
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function actionDelete($id)

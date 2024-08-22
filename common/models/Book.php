@@ -79,6 +79,7 @@ class Book extends ActiveRecord
      * Save selected authors
      */
 
+
     public function saveAuthors()
     {
         \common\models\BookAuthor::deleteAll(['book_id' => $this->id]);
