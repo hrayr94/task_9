@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Book $model */
@@ -9,12 +9,10 @@ use yii\widgets\DetailView;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Books', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="book-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -26,14 +24,30 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'title',
-            'description:ntext',
-            'publication_year',
+    <?= GridView::widget([
+        'dataProvider' => new \yii\data\ArrayDataProvider([
+            'allModels' => [$model],
+            'pagination' => false,
+        ]),
+        'columns' => [
+            [
+                'attribute' => 'id',
+                'label' => 'ID',
+            ],
+            [
+                'attribute' => 'title',
+                'label' => 'Title',
+            ],
+            [
+                'attribute' => 'description',
+                'label' => 'Description',
+                'format' => 'ntext',
+            ],
+            [
+                'attribute' => 'publication_year',
+                'label' => 'Publication Year',
+            ],
         ],
-    ]) ?>
+    ]); ?>
 
 </div>
