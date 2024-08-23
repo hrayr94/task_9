@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /** @var yii\web\View $this */
 /** @var common\models\Book[] $books */
 
-// Преобразуйте массив книг для DataProvider
+
 $booksArray = [];
 foreach ($books as $book) {
     $booksArray[] = [
