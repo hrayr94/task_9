@@ -60,10 +60,14 @@ class Book extends ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
+
     public function getAuthors()
     {
-        return $this->hasMany(Author::class, ['id' => 'author_id'])->via('book_author', ['book_id' => 'id']);
+        return $this->hasMany(Author::class, ['id' => 'author_id'])
+            ->via('bookAuthors');
     }
+
+
 
     /**
      * Gets query for [[BookAuthors]].

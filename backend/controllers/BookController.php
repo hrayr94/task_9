@@ -6,27 +6,10 @@ use backend\models\BookSearch;
 use Yii;
 use common\models\Book;
 use common\models\Author;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
-class BookController extends Controller
+class BookController extends AdminController
 {
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
-
     public function actionIndex()
     {
         $searchModel = new BookSearch();
@@ -66,10 +49,8 @@ class BookController extends Controller
     {
         $model = $this->findModel($id);
         $authors = Author::find()->all();
-        $model->author_ids = \common\models\BookAuthor::find()
-            ->select('author_id')
-            ->where(['book_id' => $model->id])
-            ->column();
+        $model->author_ids = $model->getAuthors()->select('id')->column();
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->saveAuthors();
@@ -81,24 +62,6 @@ class BookController extends Controller
             'authors' => $authors,
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function actionDelete($id)
     {
